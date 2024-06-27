@@ -3,9 +3,14 @@ import { FaPlus, FaPen } from "react-icons/fa";
 import { LuDelete } from "react-icons/lu";
 import { HiDotsHorizontal } from "react-icons/hi";
 import data from "@/data/BookingData.json";
+// import { useRouter } from 'next/router';
 
 const Bookings = () => {
   const [activeHeading, setActiveHeading] = useState('Recents');
+  const [room,setRoom]=useState([]);
+  // const router = useRouter();
+  // const { value } = router.query;
+  const api=`https://theluxuryhotelconcierge.onrender.com`
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -30,6 +35,27 @@ const Bookings = () => {
   const handleHeadingClick = (heading) => {
     setActiveHeading(heading);
   };
+
+  // useEffect(() => {
+
+  //   const fetchHotels = async () => {
+  //     try {
+  //       const res = await axios.get(`${api}/admin/room/hotel/getAllRoomsInHotelWithPopulate`);
+  //       // if (res.data.success) {
+  //         setRoom(res.data);
+  //         console.log(res.data);
+  //       // } else {
+  //         // }
+  //       } catch (error) {
+  //       // console.error('Failed to fetch hotels:', res.data.message);
+  //       console.error('Error fetching hotels:', error);
+  //     }
+  //   };
+
+  //   fetchHotels();
+  // }, []);
+
+
 
   return (
     <div className='w-full h-full m-5 flex flex-col'>
@@ -64,7 +90,7 @@ const Bookings = () => {
             </tr>
           </thead>
           <tbody className=''>
-            {filteredData.map((item, index) => (
+            {room.map((item, index) => (
               <tr key={index} className='bg-white border border-gray-400 '>
                 <td className='px-6 py-4 whitespace-nowrap'>
                   <div className='flex items-center'>
