@@ -1,54 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { FaPlus, FaPen } from "react-icons/fa";
 import { LuDelete } from "react-icons/lu";
 import { HiDotsHorizontal } from "react-icons/hi";
+import axios from 'axios';
 
 const Users = () => {
   const [activeHeading, setActiveHeading] = useState('Recents Users');
-  const data = [
-    {
-      img: "./img1.jpeg",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-    {
-      img: "./img2.webp",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-    {
-      img: "./img3.jpeg",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-    {
-      img: "./img2.webp",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-    {
-      img: "./img1.jpeg",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-    {
-      img: "./img4.jpeg",
-      heading: "John Wick (johnwick12@gmail.com)",
-      Booking: "23 June ‘24 8.29 pm",
-      CheckIn: "23 June ‘24 8.29 pm",
-      CheckOut: "23 June ‘24 8.29 pm",
-    },
-  ];
+  const [user,setUser]=useState([])
+
+  const api=`https://theluxuryhotelconcierge.onrender.com`
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${api}/user/all`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUser(data);
+        console.log('Users data:', data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
+  // const data = [
+  //   {
+  //     img: "./img1.jpeg",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  //   {
+  //     img: "./img2.webp",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  //   {
+  //     img: "./img3.jpeg",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  //   {
+  //     img: "./img2.webp",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  //   {
+  //     img: "./img1.jpeg",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  //   {
+  //     img: "./img4.jpeg",
+  //     heading: "John Wick (johnwick12@gmail.com)",
+  //     Booking: "23 June ‘24 8.29 pm",
+  //     CheckIn: "23 June ‘24 8.29 pm",
+  //     CheckOut: "23 June ‘24 8.29 pm",
+  //   },
+  // ];
 
   const handleHeadingClick = (heading) => {
     setActiveHeading(heading);
@@ -89,21 +115,21 @@ const Users = () => {
             </tr>
           </thead>
           <tbody className=''>
-            {data.map((item, index) => (
+            {user && user.map((item, index) => (
               <tr key={index} className='bg-white border border-gray-400'>
                 <td className='px-6 py-4 whitespace-nowrap'>
                   <div className='flex items-center'>
-                    <div className='flex-shrink-0 h-10 w-10'>
-                      <img className='h-10 w-10 rounded-full' src={item.img} alt='User' />
-                    </div>
+                    {/* <div className='flex-shrink-0 h-10 w-10'> */}
+                      {/* <img className='h-10 w-10 rounded-full' src={item.img} alt='User' /> */}
+                    {/* </div> */}
                     <div className='ml-4'>
-                      <div className='text-sm font-medium text-gray-900'>{item.heading}</div>
+                      <div className='text-sm font-medium text-gray-900'>{item.username}</div>
                     </div>
                   </div>
                 </td>
-                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>{item.Booking}</td>
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{item.CheckIn}</td>
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{item.CheckOut}</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium'>{item.mail}</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{item.createdAt}</td>
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{item.updatedAt}</td>
                 <td className='px-6 py-4 whitespace-nowrap flex gap-5'>
                   <button className='text-gray-500 hover:text-gray-900'><HiDotsHorizontal/></button>
                 </td>
